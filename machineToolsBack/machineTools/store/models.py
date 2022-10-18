@@ -9,7 +9,11 @@ class Category(MPTTModel):
     """Category Table implemented with MPTT."""
 
     name = models.CharField(verbose_name="Category Name", max_length=255, unique=True)
-    slug = models.SlugField(verbose_name="Category save URL", max_length=255, unique=True)
+    slug = models.SlugField(
+        verbose_name="Category save URL",
+        max_length=255,
+        unique=True,
+        blank=True)
     parent = TreeForeignKey(
         "self",
         on_delete=models.CASCADE,
@@ -122,7 +126,7 @@ class Product(models.Model):
     class Meta:
         verbose_name = "Product"
         verbose_name_plural = "Products"
-        ordering = ("-created_at")
+        ordering = ("-created_at", )
 
     def get_absolute_url(self) -> str:
         """Method for getting the absolute url of the product.
@@ -134,3 +138,50 @@ class Product(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+
+class ProductSpecificationValue(models.Model):
+    """Product Table contains all products."""
+
+    product = models.ForeignKey(
+        Product,
+        related_name="specification_values",
+        on_delete=models.CASCADE)
+    specification = models.ForeignKey(
+        ProductSpecification,
+        related_name="specification_values",
+        on_delete=models.CASCADE)
+    value = models.CharField(
+        verbose_name="value", max_length=255,
+        help_text="Product specification value (maximum of 255 characters)")
+
+    class Meta:
+        verbose_name = "Product specification value"
+        verbose_name_plural = "Product specification values"
+
+    def __str__(self) -> str:
+        return self.value
+
+
+class ProductImage(models.Model):
+    """Product Image Table contains all product images."""
+
+    product = models.ForeignKey(Product, related_name="images", on_delete=models.CASCADE)
+    image = models.ImageField(
+        verbose_name="image",
+        upload_to="images/",
+        help_text="Upload a product image",
+        default="images/default.jpg")
+    alt_text = models.CharField(
+        verbose_name="Alternative text",
+        max_length=255,
+        help_text="Add alternative text",
+        null=True,
+        blank=True)
+    is_feature = models.BooleanField(default=False)
+    created_at = models.DateTimeField(verbose_name="Created At", auto_now_add=True)
+    updated_at = models.DateTimeField(verbose_name="Updated At", auto_now=True)
+
+    class Meta:
+        verbose_name = "Product image"
+        verbose_name_plural = "Product images"
