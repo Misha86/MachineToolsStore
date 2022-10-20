@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     # third apps
     'mptt',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [

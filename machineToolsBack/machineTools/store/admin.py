@@ -72,6 +72,7 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ("title",)
     list_editable = ("is_active",)
     autocomplete_fields = ("category", "product_type")
+    list_per_page = 20
     inlines = (ProductSpecificationValueInline, ProductImageInline)
 
 

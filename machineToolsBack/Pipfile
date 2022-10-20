@@ -8,6 +8,7 @@ django = "*"
 python-decouple = "*"
 django-mptt = "*"
 pillow = "*"
+djangorestframework = "*"
 
 [dev-packages]
 flake8 = "*"
