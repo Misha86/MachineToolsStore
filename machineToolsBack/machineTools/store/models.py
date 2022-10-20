@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.utils.text import slugify
 from mptt.models import MPTTModel, TreeForeignKey
 
+from .utils import ModelsUtils
+
 
 class Category(MPTTModel):
     """Category Table implemented with MPTT."""
@@ -50,7 +52,7 @@ class ProductType(models.Model):
     """ProductType Table provides a list of different types of products that are for sale."""
 
     name = models.CharField(
-        verbose_name="Product Name",
+        verbose_name="Type Name",
         max_length=100, help_text="Required"
     )
 
@@ -73,8 +75,8 @@ class ProductSpecification(models.Model):
     is_active = models.BooleanField(default=True)
 
     class Meta:
-        verbose_name = "Product Type"
-        verbose_name_plural = "Product Types"
+        verbose_name = "Product Specification"
+        verbose_name_plural = "Product Specifications"
 
     def __str__(self) -> str:
         return self.name
@@ -94,6 +96,11 @@ class Product(models.Model):
         help_text="Not Required",
         blank=True)
     title = models.CharField(verbose_name="Product Title", max_length=200)
+    slug = models.SlugField(
+        verbose_name="Product save URL",
+        max_length=255,
+        unique=True,
+        blank=True)
     is_active = models.BooleanField(
         verbose_name="Product visibility",
         default=True,
@@ -128,13 +135,18 @@ class Product(models.Model):
         verbose_name_plural = "Products"
         ordering = ("-created_at", )
 
+    def save(self, *args, **kwargs) -> None:
+        """Method for saving model data to the DB."""
+        self.slug = slugify(self.title, allow_unicode=True)
+        super().save(*args, **kwargs)
+
     def get_absolute_url(self) -> str:
         """Method for getting the absolute url of the product.
 
         Returns:
             str: URL of the product
         """
-        return reverse("store:product_detail", kwargs={"id": self.id})
+        return reverse("store:product_detail", kwargs={"slug": self.slug})
 
     def __str__(self) -> str:
         return self.title
@@ -169,9 +181,9 @@ class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name="images", on_delete=models.CASCADE)
     image = models.ImageField(
         verbose_name="image",
-        upload_to="images/",
+        upload_to=ModelsUtils.upload_location,
         help_text="Upload a product image",
-        default="images/default.jpg")
+        default="default.jpg")
     alt_text = models.CharField(
         verbose_name="Alternative text",
         max_length=255,
