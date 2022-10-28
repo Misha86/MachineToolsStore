@@ -136,3 +136,4 @@ migrations/
 sonar-project.properties
 dump.rdb
 media/
+node_modules/
