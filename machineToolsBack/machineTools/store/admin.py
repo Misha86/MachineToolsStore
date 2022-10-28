@@ -13,6 +13,14 @@ class ProductSpecificationInline(admin.TabularInline):
     extra = 4
 
 
+class CategoryInline(admin.TabularInline):
+    """Class for tabular inline CategoryInline model."""
+    prepopulated_fields = {"slug": ("name",)}
+
+    model = Category
+    extra = 3
+
+
 class ProductSpecificationValueInline(admin.TabularInline):
     """Class for tabular inline ProductSpecificationValue model."""
 
@@ -33,9 +41,10 @@ class CategoryAdmin(MPTTModelAdmin):
     list_display = ("view_name", "slug", "parent", "is_active", "id")
     empty_value_display = "--empty---"
     list_display_links = ("view_name", "slug")
-    readonly_fields = ("slug",)
     search_fields = ("name",)
     list_filter = ("parent", "is_active")
+    prepopulated_fields = {"slug": ("name",)}
+    inlines = [CategoryInline]
 
     @admin.display
     def view_name(self, obj):
