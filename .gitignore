@@ -137,3 +137,4 @@ sonar-project.properties
 dump.rdb
 media/
 node_modules/
+categories.json

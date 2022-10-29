@@ -1,7 +1,11 @@
-import React from 'react';
+import Navbar from './components/UI/Navbar/Navbar';
 
 function App() {
-  return <div className="App">Learn React</div>;
+  return (
+    <>
+      <Navbar />
+    </>
+  );
 }
 
 export default App;
