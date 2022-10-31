@@ -14,6 +14,9 @@ export const Search = styled('div')(({ theme }) => ({
     marginLeft: theme.spacing(1),
     width: 'auto',
   },
+  [theme.breakpoints.up('xs')]: {
+    width: 'auto',
+  },
 }));
 
 export const SearchIconWrapper = styled('div')(({ theme }) => ({
