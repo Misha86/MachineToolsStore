@@ -40,7 +40,7 @@ class Category(MPTTModel):
         Returns:
             str: URL of the category list
         """
-        return reverse("store:category_list", kwargs={"slug": self.slug})
+        return reverse("store:category_detail", kwargs={"slug": self.slug})
 
 
 class ProductType(models.Model):
