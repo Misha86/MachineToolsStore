@@ -31,11 +31,6 @@ class Category(MPTTModel):
         verbose_name = "Category"
         verbose_name_plural = "Categories"
 
-    def save(self, *args, **kwargs) -> None:
-        """Method for saving model data to the DB."""
-        self.slug = slugify(self.name, allow_unicode=True)
-        super().save(*args, **kwargs)
-
     def __str__(self) -> str:
         return self.name
 
