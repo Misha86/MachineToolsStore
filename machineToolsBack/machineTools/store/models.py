@@ -40,7 +40,7 @@ class Category(MPTTModel):
         Returns:
             str: URL of the category list
         """
-        return reverse("store:category_list", kwargs={"slug": self.slug})
+        return reverse("store:category_detail", kwargs={"slug": self.slug})
 
 
 class ProductType(models.Model):
@@ -87,7 +87,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, related_name="products", on_delete=models.RESTRICT)
     description = models.TextField(
         verbose_name="description",
-        max_length=255,
+        max_length=500,
         help_text="Not Required",
         blank=True)
     title = models.CharField(verbose_name="Product Title", max_length=200)
@@ -148,7 +148,7 @@ class Product(models.Model):
 
 
 class ProductSpecificationValue(models.Model):
-    """Product Table contains all products."""
+    """ProductSpecificationValue Table contains all product specification values."""
 
     product = models.ForeignKey(
         Product,

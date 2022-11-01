@@ -135,6 +135,7 @@ dmypy.json
 migrations/
 sonar-project.properties
 dump.rdb
-media/
+# media/
+labturn-2028/
 node_modules/
 categories.json

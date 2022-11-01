@@ -18,8 +18,30 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
+
+
+@api_view(["GET"])
+def api_root(request, reverse_format=None):
+    """Add links of all lists to API Home page."""
+    return Response({
+        "categories": reverse(
+            "category_list",
+            request=request,
+            format=reverse_format,
+        ),
+        "products": reverse(
+            "products_list",
+            request=request,
+            format=reverse_format,
+        )},
+    )
+
 
 urlpatterns = [
+    path("", api_root),
     path("admin/", admin.site.urls),
     path("api-auth/", include("rest_framework.urls")),
     path("api/", include("store.urls")),
