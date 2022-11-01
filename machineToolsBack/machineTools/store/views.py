@@ -1,13 +1,15 @@
 """Module for store app views."""
+
+from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.permissions import IsAdminUser
 
-from .models import Product, Category
+from .models import Category, Product
 from .permissions import ReadOnly
-from .serializers import ProductSerializer, CategorySerializer
+from .serializers import CategorySerializer, ProductSerializer
 
 
-class CategoryListView(generics.ListCreateAPIView):
+class CategoryListCreateView(generics.ListCreateAPIView):
     """This view is used to display all categories in the store."""
 
     queryset = Category.objects.all()
@@ -22,6 +24,20 @@ class CategoryRetrieveView(generics.RetrieveUpdateAPIView):
     serializer_class = CategorySerializer
     permission_classes = [IsAdminUser | ReadOnly]
     lookup_field = "slug"
+
+
+class CategoryProductsRetrieveView(generics.ListCreateAPIView):
+    """This view is used to display all category products in the store."""
+
+    serializer_class = ProductSerializer
+    permission_classes = [IsAdminUser | ReadOnly]
+    lookup_field = "slug"
+
+    def get_queryset(self):
+        """Get all category products."""
+        print(self.kwargs["slug"])
+        category = get_object_or_404(Category, slug=self.kwargs["slug"])
+        return category.products.all()
 
 
 class ProductListView(generics.ListCreateAPIView):
