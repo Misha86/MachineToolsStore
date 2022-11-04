@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Menu, MenuItem } from '@mui/material';
 import { NestedMenuItem } from 'mui-nested-menu';
+import CategoryService from '../../../API/CategoryService';
+import { Link } from 'react-router-dom';
+
 
 const NestedMenu = ({ smallScreen }) => {
   const [menuPosition, setMenuPosition] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [subMenuItems, setSubMenuItems] = useState(null);
+
+  const fetchCategories = async () => {
+    setIsLoading(true);
+    const categories = await CategoryService.getAllCategories();
+    setSubMenuItems(categories);
+    setIsLoading(false);
+  };
 
   const handleOpenNavMenu = (event) => {
+    fetchCategories();
     if (menuPosition) {
       return;
     }
@@ -34,38 +47,29 @@ const NestedMenu = ({ smallScreen }) => {
         onClose={() => setMenuPosition(null)}
         anchorReference="anchorPosition"
         anchorPosition={menuPosition}
-        onMouseDown={() => setMenuPosition(null)}
+        onMouseDown={handleCloseNavMenu}
       >
-        <NestedMenuItem
-          label="Button1"
-          parentMenuOpen={!!menuPosition}
-          onClick={handleCloseNavMenu}
-        >
-          <MenuItem onClick={handleCloseNavMenu}>Sub-Button1</MenuItem>
-          <MenuItem onClick={handleCloseNavMenu}>Sub-Button1</MenuItem>
-          <MenuItem onClick={handleCloseNavMenu}>Sub-Button1</MenuItem>
-          <MenuItem onClick={handleCloseNavMenu}>Sub-Button1</MenuItem>
-        </NestedMenuItem>
-        <NestedMenuItem
-          label="Button1"
-          parentMenuOpen={!!menuPosition}
-          onClick={handleCloseNavMenu}
-        >
-          <MenuItem onClick={handleCloseNavMenu}>Sub-Button1</MenuItem>
-          <MenuItem onClick={handleCloseNavMenu}>Sub-Button1</MenuItem>
-          <MenuItem onClick={handleCloseNavMenu}>Sub-Button1</MenuItem>
-          <MenuItem onClick={handleCloseNavMenu}>Sub-Button1</MenuItem>
-        </NestedMenuItem>
-        <NestedMenuItem
-          label="Button1"
-          parentMenuOpen={!!menuPosition}
-          onClick={handleCloseNavMenu}
-        >
-          <MenuItem onClick={handleCloseNavMenu}>Sub-Button1</MenuItem>
-          <MenuItem onClick={handleCloseNavMenu}>Sub-Button1</MenuItem>
-          <MenuItem onClick={handleCloseNavMenu}>Sub-Button1</MenuItem>
-          <MenuItem onClick={handleCloseNavMenu}>Sub-Button1</MenuItem>
-        </NestedMenuItem>
+        {subMenuItems &&
+          subMenuItems.map((category) => (
+            <NestedMenuItem
+              key={category.name}
+              label={category.name}
+              parentMenuOpen={!!menuPosition}
+              onClick={handleCloseNavMenu}
+            >
+              {category.children &&
+                category.children.map((sub) => (
+                  <MenuItem
+                    component={Link}
+                    to={`/categories/${sub.slug}/products`}
+                    key={sub.name}
+                    onClick={handleCloseNavMenu}
+                  >
+                    {sub.name}
+                  </MenuItem>
+                ))}
+            </NestedMenuItem>
+          ))}
       </Menu>
     </div>
   );

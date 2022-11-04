@@ -39,14 +39,19 @@ class ProductSerializer(serializers.ModelSerializer):
         return data
 
 
+class RecursiveField(serializers.Serializer):
+    """Serializer for getting all children in the category."""
+
+    def to_representation(self, value):
+        """Display child category as parent category."""
+        serializer = self.parent.parent.__class__(value, context=self.context)
+        return serializer.data
+
+
 class CategorySerializer(serializers.ModelSerializer):
-    """Serializer for getting all products in the store."""
-    children = serializers.HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name="category_detail",
-        lookup_field="slug"
-    )
+    """Serializer for getting all categories in the store."""
+
+    children = RecursiveField(many=True)
     products = serializers.HyperlinkedIdentityField(view_name="category_products",
                                                     lookup_field="slug")
 

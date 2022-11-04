@@ -9,6 +9,7 @@ python-decouple = "*"
 django-mptt = "*"
 pillow = "*"
 djangorestframework = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 flake8 = "*"

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -8,16 +8,16 @@ import NestedMenu from '../NestedMenu/NestedMenu';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
+
 const LargeScreenNavbar = ({ pages }) => {
   const location = useLocation();
-
+  
   return (
-    <>
+    <>  
       <Handyman sx={IconLg} />
       <Typography component={Link} to="/" variant="h5" noWrap sx={TypographyLg}>
         KS
       </Typography>
-
       <Box sx={BoxLg}>
         <NestedMenu />
         {pages.map((page) => (

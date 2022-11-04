@@ -2,9 +2,14 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
-from mptt.models import MPTTModel, TreeForeignKey
+from mptt.models import MPTTModel, TreeForeignKey, TreeManager
 
 from .utils import ModelsUtils
+
+
+class CategoryManager(TreeManager):
+    def viewable(self):
+        return self.get_queryset().filter(level=0)
 
 
 class Category(MPTTModel):
@@ -23,6 +28,8 @@ class Category(MPTTModel):
         blank=True,
         related_name="children")
     is_active = models.BooleanField(default=True)
+
+    objects = CategoryManager()
 
     class MPTTMeta:
         order_insertion_by = ["name"]

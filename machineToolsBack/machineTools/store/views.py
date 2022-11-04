@@ -12,7 +12,7 @@ from .serializers import CategorySerializer, ProductSerializer
 class CategoryListCreateView(generics.ListCreateAPIView):
     """This view is used to display all categories in the store."""
 
-    queryset = Category.objects.all()
+    queryset = Category.objects.viewable()
     serializer_class = CategorySerializer
     permission_classes = [IsAdminUser | ReadOnly]
 

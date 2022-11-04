@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
@@ -7,10 +7,13 @@ import { Search, SearchIconWrapper, StyledInputBase } from '../Search/Search';
 import SmallScreenNavbar from './SmallScreenNavbar';
 import LargeScreenNavbar from './LargeScreenNavbar';
 
-const pages = [{name: 'About Us', path: '/about'}, {name: 'Contacts', path: '/contacts'}];
+const pages = [
+  { name: 'About Us', path: '/about' },
+  { name: 'Contacts', path: '/contacts' },
+];
 
 const Navbar = () => {
-
+  
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
