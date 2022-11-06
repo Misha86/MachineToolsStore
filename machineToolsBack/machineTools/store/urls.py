@@ -13,4 +13,6 @@ urlpatterns = [
         views.CategoryProductsRetrieveView.as_view(),
         name="category_products"),
     path("products/", views.ProductListView.as_view(), name="products_list"),
+    path("products/<str:slug>", views.ProductRetrieveUpdateDestroyView.as_view(),
+         name="product_detail"),
 ]

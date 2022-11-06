@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams} from 'react-router-dom';
 import CategoryService from '../API/CategoryService';
-import { Grid, Paper, CircularProgress, Container, Box, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
+import {
+  CircularProgress,
+  Container,
+  Box,
+  Grid
+} from '@mui/material';
+import ProductItem from '../components/ProductItem';
 
 const ProductsList = () => {
   const params = useParams();
@@ -36,13 +33,7 @@ const ProductsList = () => {
             <CircularProgress color="primary" />
           </Box>
         ) : (
-          products.map((product) => (
-            <Grid key={product.id} item xs={3}>
-              <Item>
-                <Typography variant="h6">{product.title}</Typography>
-              </Item>
-            </Grid>
-          ))
+          products.map((product) => <ProductItem key={product.title} product={product} />)
         )}
       </Grid>
     </Container>

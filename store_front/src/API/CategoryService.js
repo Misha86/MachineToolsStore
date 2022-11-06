@@ -14,11 +14,4 @@ export default class CategoryService {
     const response = await this.api(`categories/${categorySlug}/products`);
     return response.data.results;
   }
-
-  static async getComments(postId) {
-    const response = await axios.get(
-      `https://jsonplaceholder.typicode.com/posts/${postId}/comments`
-    );
-    return response;
-  }
 }

@@ -22,12 +22,14 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = (
             "title",
+            "slug",
             "description",
             "regular_price",
             "discount_price",
             "is_active",
             "product_type",
-            "category", "images")
+            "category", 
+            "images")
 
     def to_representation(self, instance):
         """Display category and product type names."""
