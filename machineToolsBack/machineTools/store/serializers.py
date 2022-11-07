@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 
-from .models import Category, Product, ProductImage
+from .models import Category, Product, ProductImage, ProductSpecificationValue
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
@@ -13,10 +13,25 @@ class ProductImageSerializer(serializers.ModelSerializer):
         fields = ("image", "alt_text", "is_feature")
 
 
+class ProductSpecificationValueSerializer(serializers.ModelSerializer):
+    """Serializer for getting product specification value."""
+
+    class Meta:
+        model = ProductSpecificationValue
+        fields = ("specification", "value")
+
+    def to_representation(self, instance):
+        """Display specification name."""
+        data = super().to_representation(instance)
+        data["specification"] = instance.specification.name
+        return data
+
+
 class ProductSerializer(serializers.ModelSerializer):
     """Serializer for getting all products in the store."""
 
     images = ProductImageSerializer(many=True, read_only=True)
+    specification_values = ProductSpecificationValueSerializer(many=True, read_only=True)
 
     class Meta:
         model = Product
@@ -28,8 +43,9 @@ class ProductSerializer(serializers.ModelSerializer):
             "discount_price",
             "is_active",
             "product_type",
-            "category", 
-            "images")
+            "category",
+            "images",
+            "specification_values")
 
     def to_representation(self, instance):
         """Display category and product type names."""

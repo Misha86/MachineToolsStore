@@ -8,7 +8,10 @@ from .utils import ModelsUtils
 
 
 class CategoryManager(TreeManager):
+    """Custom manager for MPTT."""
+
     def viewable(self):
+        """Filter Categories according level."""
         return self.get_queryset().filter(level=0)
 
 
